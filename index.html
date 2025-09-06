@@ -1,220 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>High Graphics Car Racing Game</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #111;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Insecurity in Urban Areas</title>
+    <style>
+        /* Global Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-    canvas {
-      background: #222;
-      border: 4px solid #fff;
-      border-radius: 12px;
-      margin-top: 20px;
-      box-shadow: 0 0 20px #0ff;
-    }
+        body {
+            background-color: #f6f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
 
-    h1 {
-      color: #0ff;
-      text-shadow: 0 0 10px #0ff;
-    }
+        header {
+            background-color: #1e88e5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+        }
 
-    .controls {
-      margin-top: 10px;
-    }
+        nav {
+            background-color: #1565c0;
+            padding: 10px;
+            text-align: center;
+        }
 
-    button {
-      background: #0ff;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
 
-    button:hover {
-      background: #00bcd4;
-      color: #fff;
-    }
+        nav a:hover {
+            color: #ffeb3b;
+        }
 
-    #stats {
-      margin-top: 10px;
-      font-size: 18px;
-      color: #fff;
-    }
-  </style>
+        .container {
+            width: 85%;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #1565c0;
+            margin-bottom: 10px;
+            border-left: 5px solid #1565c0;
+            padding-left: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul {
+            margin: 10px 0 20px 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Collapsible Section */
+        .collapsible {
+            background-color: #1e88e5;
+            color: white;
+            cursor: pointer;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            margin-top: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .collapsible:hover {
+            background-color: #1565c0;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
+            border-left: 4px solid #1565c0;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #1e88e5;
+            color: white;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>🚗 High Graphics Car Racing Game 🏁</h1>
+    <!-- Header -->
+    <header>
+        Food Insecurity in Urban Areas
+    </header>
 
-  <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <!-- Navigation -->
+    <nav>
+        <a href="#intro">Introduction</a>
+        <a href="#causes">Causes</a>
+        <a href="#effects">Effects</a>
+        <a href="#solutions">Solutions</a>
+    </nav>
 
-  <div class="controls">
-    <button onclick="startGame()">Start</button>
-    <button onclick="pauseGame()">Pause</button>
-    <button onclick="restartGame()">Restart</button>
-  </div>
+    <!-- Main Content -->
+    <div class="container" id="intro">
+        <h2>Introduction</h2>
+        <p>
+            Food insecurity in urban areas refers to the lack of consistent access to sufficient, safe, and nutritious food 
+            for people living in cities. Despite urban areas having more food resources than rural regions, poverty, 
+            rapid urbanization, and inequality have left millions struggling to afford healthy meals.
+        </p>
+    </div>
 
-  <div id="stats">Score: 0 | Speed: 5</div>
+    <div class="container" id="causes">
+        <h2>Major Causes</h2>
+        <ul>
+            <li><b>Poverty & Low Income:</b> Limited earnings make nutritious food unaffordable.</li>
+            <li><b>High Food Prices:</b> Transportation and storage costs increase retail prices.</li>
+            <li><b>Urban Food Deserts:</b> Some areas lack grocery stores, forcing reliance on fast food.</li>
+            <li><b>Unemployment:</b> Migrants and daily wage workers are the most affected.</li>
+            <li><b>Climate Change:</b> Extreme weather impacts food supply and affordability.</li>
+        </ul>
+    </div>
 
-  <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
+    <div class="container" id="effects">
+        <h2>Effects of Food Insecurity</h2>
+        <ul>
+            <li><b>Malnutrition:</b> Poor diet leads to undernutrition and obesity.</li>
+            <li><b>Health Issues:</b> Increased risk of diabetes, heart disease, and deficiencies.</li>
+            <li><b>Social Inequality:</b> Expands the gap between rich and poor communities.</li>
+            <li><b>Economic Burden:</b> Reduced productivity and higher healthcare costs.</li>
+        </ul>
+    </div>
 
-    const roadWidth = canvas.width;
-    const roadHeight = canvas.height;
+    <div class="container" id="solutions">
+        <h2>Possible Solutions</h2>
+        <button class="collapsible">Click to See Solutions</button>
+        <div class="content">
+            <ul>
+                <li>Encourage <b>urban farming</b> and rooftop gardens.</li>
+                <li>Subsidize healthy food for low-income families.</li>
+                <li>Strengthen <b>public food distribution systems</b>.</li>
+                <li>Improve transport to make food markets more accessible.</li>
+                <li>Raise awareness about nutrition and healthy eating.</li>
+            </ul>
+        </div>
+    </div>
 
-    let playerCar = {
-      x: roadWidth / 2 - 25,
-      y: roadHeight - 120,
-      width: 50,
-      height: 100,
-      speed: 5
-    };
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 Food Awareness Initiative | Designed by Boddati Jagadish
+    </footer>
 
-    let keys = {};
-    let score = 0;
-    let speed = 5;
-    let isPaused = false;
-    let isGameOver = false;
-
-    let laneLines = [];
-    let aiCars = [];
-
-    function drawRoad() {
-      ctx.fillStyle = "#333";
-      ctx.fillRect(0, 0, roadWidth, roadHeight);
-
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 4;
-      ctx.setLineDash([20, 15]);
-
-      for (let i = 0; i < roadHeight; i += 40) {
-        ctx.beginPath();
-        ctx.moveTo(roadWidth / 2 - 2, i);
-        ctx.lineTo(roadWidth / 2 - 2, i + 20);
-        ctx.stroke();
-      }
-    }
-
-    function drawCar(car, color) {
-      ctx.fillStyle = color;
-      ctx.fillRect(car.x, car.y, car.width, car.height);
-
-      ctx.fillStyle = "#111";
-      ctx.fillRect(car.x + 10, car.y + 10, 30, 40); // windshield
-    }
-
-    function spawnAICar() {
-      const laneX = [60, 160, 260];
-      const lane = laneX[Math.floor(Math.random() * laneX.length)];
-      aiCars.push({
-        x: lane,
-        y: -120,
-        width: 50,
-        height: 100,
-        speed: speed - 1,
-        color: `hsl(${Math.random() * 360}, 80%, 60%)`
-      });
-    }
-
-    function updateAI() {
-      for (let i = aiCars.length - 1; i >= 0; i--) {
-        aiCars[i].y += aiCars[i].speed;
-
-        if (aiCars[i].y > roadHeight) {
-          aiCars.splice(i, 1);
-          score += 10;
-          speed += 0.05; // Increase difficulty
+    <script>
+        // JavaScript for collapsible section
+        const coll = document.getElementsByClassName("collapsible");
+        for (let i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                const content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
         }
-      }
-    }
-
-    function checkCollision() {
-      for (let ai of aiCars) {
-        if (
-          playerCar.x < ai.x + ai.width &&
-          playerCar.x + playerCar.width > ai.x &&
-          playerCar.y < ai.y + ai.height &&
-          playerCar.height + playerCar.y > ai.y
-        ) {
-          isGameOver = true;
-          ctx.fillStyle = "rgba(0,0,0,0.7)";
-          ctx.fillRect(0, 0, roadWidth, roadHeight);
-
-          ctx.fillStyle = "#fff";
-          ctx.font = "30px Arial";
-          ctx.fillText("GAME OVER!", 90, 250);
-
-          ctx.font = "20px Arial";
-          ctx.fillText(`Score: ${score}`, 140, 300);
-        }
-      }
-    }
-
-    function updatePlayer() {
-      if (keys["ArrowLeft"] && playerCar.x > 20) playerCar.x -= playerCar.speed;
-      if (keys["ArrowRight"] && playerCar.x < roadWidth - playerCar.width - 20) playerCar.x += playerCar.speed;
-      if (keys["ArrowUp"] && playerCar.y > 0) playerCar.y -= playerCar.speed;
-      if (keys["ArrowDown"] && playerCar.y < roadHeight - playerCar.height) playerCar.y += playerCar.speed;
-    }
-
-    function updateGame() {
-      if (isPaused || isGameOver) return;
-
-      ctx.clearRect(0, 0, roadWidth, roadHeight);
-      drawRoad();
-      drawCar(playerCar, "#00ff99");
-
-      aiCars.forEach(ai => drawCar(ai, ai.color));
-      updateAI();
-      updatePlayer();
-      checkCollision();
-
-      if (Math.random() < 0.02) spawnAICar();
-
-      document.getElementById("stats").innerText = `Score: ${score} | Speed: ${speed.toFixed(1)}`;
-
-      requestAnimationFrame(updateGame);
-    }
-
-    function startGame() {
-      if (isGameOver) return;
-      isPaused = false;
-      updateGame();
-    }
-
-    function pauseGame() {
-      isPaused = true;
-    }
-
-    function restartGame() {
-      playerCar = { x: roadWidth / 2 - 25, y: roadHeight - 120, width: 50, height: 100, speed: 5 };
-      aiCars = [];
-      score = 0;
-      speed = 5;
-      isPaused = false;
-      isGameOver = false;
-      updateGame();
-    }
-
-    window.addEventListener("keydown", e => keys[e.key] = true);
-    window.addEventListener("keyup", e => keys[e.key] = false);
-
-    drawRoad();
-    drawCar(playerCar, "#00ff99");
-  </script>
+    </script>
 </body>
 </html>
