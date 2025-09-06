@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Insecurity in Urban Areas</title>
+    <style>
+        /* Global Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: #f6f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #1e88e5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            background-color: #1565c0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffeb3b;
+        }
+
+        .container {
+            width: 85%;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #1565c0;
+            margin-bottom: 10px;
+            border-left: 5px solid #1565c0;
+            padding-left: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul {
+            margin: 10px 0 20px 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Collapsible Section */
+        .collapsible {
+            background-color: #1e88e5;
+            color: white;
+            cursor: pointer;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            margin-top: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .collapsible:hover {
+            background-color: #1565c0;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
+            border-left: 4px solid #1565c0;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #1e88e5;
+            color: white;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        Food Insecurity in Urban Areas
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#intro">Introduction</a>
+        <a href="#causes">Causes</a>
+        <a href="#effects">Effects</a>
+        <a href="#solutions">Solutions</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container" id="intro">
+        <h2>Introduction</h2>
+        <p>
+            Food insecurity in urban areas refers to the lack of consistent access to sufficient, safe, and nutritious food 
+            for people living in cities. Despite urban areas having more food resources than rural regions, poverty, 
+            rapid urbanization, and inequality have left millions struggling to afford healthy meals.
+        </p>
+    </div>
+
+    <div class="container" id="causes">
+        <h2>Major Causes</h2>
+        <ul>
+            <li><b>Poverty & Low Income:</b> Limited earnings make nutritious food unaffordable.</li>
+            <li><b>High Food Prices:</b> Transportation and storage costs increase retail prices.</li>
+            <li><b>Urban Food Deserts:</b> Some areas lack grocery stores, forcing reliance on fast food.</li>
+            <li><b>Unemployment:</b> Migrants and daily wage workers are the most affected.</li>
+            <li><b>Climate Change:</b> Extreme weather impacts food supply and affordability.</li>
+        </ul>
+    </div>
+
+    <div class="container" id="effects">
+        <h2>Effects of Food Insecurity</h2>
+        <ul>
+            <li><b>Malnutrition:</b> Poor diet leads to undernutrition and obesity.</li>
+            <li><b>Health Issues:</b> Increased risk of diabetes, heart disease, and deficiencies.</li>
+            <li><b>Social Inequality:</b> Expands the gap between rich and poor communities.</li>
+            <li><b>Economic Burden:</b> Reduced productivity and higher healthcare costs.</li>
+        </ul>
+    </div>
+
+    <div class="container" id="solutions">
+        <h2>Possible Solutions</h2>
+        <button class="collapsible">Click to See Solutions</button>
+        <div class="content">
+            <ul>
+                <li>Encourage <b>urban farming</b> and rooftop gardens.</li>
+                <li>Subsidize healthy food for low-income families.</li>
+                <li>Strengthen <b>public food distribution systems</b>.</li>
+                <li>Improve transport to make food markets more accessible.</li>
+                <li>Raise awareness about nutrition and healthy eating.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 Food Awareness Initiative | Designed by Boddati Jagadish
+    </footer>
+
+    <script>
+        // JavaScript for collapsible section
+        const coll = document.getElementsByClassName("collapsible");
+        for (let i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                const content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
