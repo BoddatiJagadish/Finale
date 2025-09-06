@@ -1,496 +1,220 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Simple Car Racing Game</title>
-<style>
-  :root{
-    --bg:#0b1220;
-    --panel:#ffffffee;
-    --accent:#ff6b6b;
-  }
-  html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;}
-  body{
-    display:flex;
-    align-items:flex-start;
-    gap:18px;
-    padding:18px;
-    background:linear-gradient(180deg,#071124 0%, #0b1220 100%);
-    color:#fff;
-    box-sizing:border-box;
-  }
-  .game {
-    width:760px;
-    background:linear-gradient(180deg,#18324a 0%, #10212d 100%);
-    border-radius:12px;
-    padding:12px;
-    box-shadow:0 12px 30px rgba(0,0,0,0.5);
-  }
-  h1{margin:6px 0 10px;font-size:20px;color:#fff}
-  canvas{display:block;width:100%;height:520px;border-radius:8px;background:#3b3b3b;touch-action:none}
-  .sidebar{
-    width:320px;
-    background:var(--panel);
-    color:#062024;
-    border-radius:12px;
-    padding:14px;
-    box-shadow:0 12px 30px rgba(0,0,0,0.15);
-    height:560px;
-    box-sizing:border-box;
-  }
-  .stat{font-weight:700;font-size:20px;color:#062024}
-  .controls{display:flex;gap:8px;margin:10px 0}
-  button{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700}
-  button.secondary{background:transparent;border:1px solid #e9e9e9;color:var(--accent)}
-  small{color:#335}
-  .log{height:260px;overflow:auto;background:#fff;border-radius:8px;padding:8px;border:1px dashed #e6e6e6}
-  .kbd{display:inline-block;padding:6px 8px;border-radius:6px;background:#0a2430;color:#fff;font-weight:700;margin-left:6px}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>High Graphics Car Racing Game</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      background: #222;
+      border: 4px solid #fff;
+      border-radius: 12px;
+      margin-top: 20px;
+      box-shadow: 0 0 20px #0ff;
+    }
+
+    h1 {
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff;
+    }
+
+    .controls {
+      margin-top: 10px;
+    }
+
+    button {
+      background: #0ff;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #00bcd4;
+      color: #fff;
+    }
+
+    #stats {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
+  <h1>🚗 High Graphics Car Racing Game 🏁</h1>
 
-  <div class="game">
-    <h1>Car Racing (avoid traffic)</h1>
-    <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div>
-        <button id="startBtn">Start</button>
-        <button id="pauseBtn" class="secondary">Pause</button>
-        <button id="resetBtn" class="secondary">Reset</button>
-      </div>
-      <div style="color:#dfe9ef;font-size:13px">
-        Controls:
-        <span class="kbd">←</span>
-        <span class="kbd">→</span>
-        <span class="kbd">↑</span>
-        <span class="kbd">↓</span>
-      </div>
-    </div>
-    <canvas id="race" width="720" height="520"></canvas>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+  <div class="controls">
+    <button onclick="startGame()">Start</button>
+    <button onclick="pauseGame()">Pause</button>
+    <button onclick="restartGame()">Restart</button>
   </div>
 
-  <div class="sidebar">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div style="font-size:12px;color:#6b6b6b">Distance</div>
-        <div class="stat" id="distance">0 m</div>
-      </div>
-      <div>
-        <div style="font-size:12px;color:#6b6b6b">Speed</div>
-        <div class="stat" id="speed">0</div>
-      </div>
-    </div>
+  <div id="stats">Score: 0 | Speed: 5</div>
 
-    <div style="margin-top:12px">
-      <div style="font-size:12px;color:#6b6b6b">Laps / Collisions</div>
-      <div style="display:flex;gap:10px;margin-top:6px">
-        <div style="flex:1;background:#f7f7f7;border-radius:8px;padding:8px;text-align:center">
-          <div style="font-size:18px;font-weight:700" id="laps">0</div>
-          <div style="font-size:12px;color:#6b6b6b">laps</div>
-        </div>
-        <div style="flex:1;background:#f7f7f7;border-radius:8px;padding:8px;text-align:center">
-          <div style="font-size:18px;font-weight:700" id="collisions">0</div>
-          <div style="font-size:12px;color:#6b6b6b">collisions</div>
-        </div>
-      </div>
-    </div>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
 
-    <h3 style="margin-top:14px;color:#063">Game Log</h3>
-    <div class="log" id="log"></div>
+    const roadWidth = canvas.width;
+    const roadHeight = canvas.height;
 
-    <div style="margin-top:12px;font-size:13px;color:#334">
-      <strong>Tips</strong>
-      <ul>
-        <li>Use left/right to change lanes and up/down to adjust speed.</li>
-        <li>Avoid oncoming & slower cars. Colliding slows you down & counts as collision.</li>
-        <li>Speed increases distance; distance increases difficulty (more AI cars).</li>
-      </ul>
-    </div>
-  </div>
+    let playerCar = {
+      x: roadWidth / 2 - 25,
+      y: roadHeight - 120,
+      width: 50,
+      height: 100,
+      speed: 5
+    };
 
-<script>
-/* Car Racing Game
-   - Canvas-based top-down road
-   - Player car at bottom, lanes, AI cars spawn and move
-   - Arrow keys to steer & accelerate
-   - Simple collision detection and scoring (distance)
-*/
+    let keys = {};
+    let score = 0;
+    let speed = 5;
+    let isPaused = false;
+    let isGameOver = false;
 
-// Canvas setup & DPR fix
-const canvas = document.getElementById('race');
-const ctx = canvas.getContext('2d');
+    let laneLines = [];
+    let aiCars = [];
 
-function fixDPR() {
-  const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = Math.floor(rect.width * dpr);
-  canvas.height = Math.floor(rect.height * dpr);
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-}
-window.addEventListener('resize', fixDPR);
-fixDPR();
+    function drawRoad() {
+      ctx.fillStyle = "#333";
+      ctx.fillRect(0, 0, roadWidth, roadHeight);
 
-const startBtn = document.getElementById('startBtn');
-const pauseBtn = document.getElementById('pauseBtn');
-const resetBtn = document.getElementById('resetBtn');
-const distanceEl = document.getElementById('distance');
-const speedEl = document.getElementById('speed');
-const lapsEl = document.getElementById('laps');
-const collisionsEl = document.getElementById('collisions');
-const logEl = document.getElementById('log');
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 4;
+      ctx.setLineDash([20, 15]);
 
-function log(msg){
-  const t = new Date().toLocaleTimeString();
-  logEl.innerHTML = `<div>[${t}] ${msg}</div>` + logEl.innerHTML;
-}
-
-// Game constants
-const GAME = {
-  width: canvas.clientWidth,
-  height: canvas.clientHeight,
-  lanes: 3,
-  lanePadding: 30,
-  roadMargin: 60,
-  aiSpawnInterval: 1200, // ms (will speed up)
-  maxAI: 6
-};
-
-// Derived lane centers
-function laneCenters(){
-  const roadW = GAME.width - GAME.roadMargin*2;
-  const laneW = roadW / GAME.lanes;
-  const centers = [];
-  for(let i=0;i<GAME.lanes;i++){
-    centers.push(GAME.roadMargin + laneW*(i+0.5));
-  }
-  return centers;
-}
-let laneCenterCache = laneCenters();
-
-// Player
-const player = {
-  lane: 1, // 0..lanes-1
-  x: laneCenterCache[1],
-  y: GAME.height - 120,
-  width: 40,
-  height: 70,
-  speed: 0, // 0..maxSpeed
-  maxSpeed: 10,
-  accel: 0.06,
-  braking: 0.18,
-  steeringSpeed: 8, // px per frame when switching
-  isAlive: true
-};
-
-// AI cars array
-let aiCars = [];
-
-// Game state
-let running = false;
-let paused = false;
-let lastTime = performance.now();
-let spawnTimer = 0;
-let distance = 0;
-let collisions = 0;
-let laps = 0;
-let spawnInterval = GAME.aiSpawnInterval;
-
-// Controls
-const keys = {left:false,right:false,up:false,down:false};
-window.addEventListener('keydown',(e)=>{
-  if(e.key === 'ArrowLeft' || e.key === 'a') keys.left = true;
-  if(e.key === 'ArrowRight' || e.key === 'd') keys.right = true;
-  if(e.key === 'ArrowUp' || e.key === 'w') keys.up = true;
-  if(e.key === 'ArrowDown' || e.key === 's') keys.down = true;
-  if(e.key === 'p') togglePause();
-});
-window.addEventListener('keyup',(e)=>{
-  if(e.key === 'ArrowLeft' || e.key === 'a') keys.left = false;
-  if(e.key === 'ArrowRight' || e.key === 'd') keys.right = false;
-  if(e.key === 'ArrowUp' || e.key === 'w') keys.up = false;
-  if(e.key === 'ArrowDown' || e.key === 's') keys.down = false;
-});
-
-// Start/Pause/Reset
-startBtn.addEventListener('click', ()=> {
-  if(!running) startGame();
-});
-pauseBtn.addEventListener('click', togglePause);
-resetBtn.addEventListener('click', resetGame);
-
-function togglePause(){
-  if(!running) return;
-  paused = !paused;
-  pauseBtn.innerText = paused ? 'Resume' : 'Pause';
-  log(paused ? 'Game paused' : 'Resumed');
-}
-
-// Utilities
-function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
-
-// Initialize/reset
-function initGame(){
-  aiCars = [];
-  running = false;
-  paused = false;
-  spawnTimer = 0;
-  lastTime = performance.now();
-  distance = 0;
-  collisions = 0;
-  laps = 0;
-  player.lane = 1;
-  laneCenterCache = laneCenters();
-  player.x = laneCenterCache[player.lane];
-  player.y = GAME.height - 120;
-  player.speed = 2.5;
-  player.isAlive = true;
-  spawnInterval = GAME.aiSpawnInterval;
-  updateHUD();
-  log('Game initialized.');
-}
-
-function startGame(){
-  if(!running){
-    running = true;
-    paused = false;
-    lastTime = performance.now();
-    requestAnimationFrame(loop);
-    log('Game started.');
-  }
-}
-
-function resetGame(){
-  initGame();
-  draw(); // render initial frame
-  log('Game reset.');
-}
-
-// AI car factory
-function spawnAICar(){
-  if(aiCars.length >= GAME.maxAI) return;
-  const lane = randInt(0,GAME.lanes-1);
-  const centers = laneCenterCache;
-  const x = centers[lane];
-  // spawn above the view
-  const y = -80 - randInt(0,300);
-  // AI speed relative to player: sometimes slower (you can overtake), sometimes faster (oncoming)
-  const speed = 2 + Math.random()*6; // base
-  const w = 40 + randInt(-6,6);
-  const h = 70 + randInt(-10,10);
-  const color = `hsl(${randInt(0,360)},60%,50%)`;
-  aiCars.push({lane,x,y,w,h,speed,color,dir:1}); // dir 1 means moving down (same direction); use dir -1 for oncoming if desired
-}
-
-// Collision detection between rects
-function rectsOverlap(a,b){
-  return !(a.x + a.w < b.x || a.x > b.x + b.w || a.y + a.h < b.y || a.y > b.y + b.h);
-}
-
-// Update HUD
-function updateHUD(){
-  distanceEl.innerText = `${Math.floor(distance)} m`;
-  speedEl.innerText = `${Math.round(player.speed)}`;
-  collisionsEl.innerText = collisions;
-  lapsEl.innerText = laps;
-}
-
-// Game loop
-function loop(now){
-  if(!running) return;
-  if(paused){ lastTime = now; requestAnimationFrame(loop); return; }
-  const dt = (now - lastTime) / 16.666; // ~frames, normalized
-  lastTime = now;
-
-  // Update spawn timer
-  spawnTimer += (now - lastTime); // careful: lastTime updated earlier - but spawn logic uses its own small timer
-  // we'll use a separate variable instead to avoid negative increments
-  // simpler: spawn based on delta time using an accumulator (secs)
-  // implement spawn properly:
-  spawnAccumulator += (now - lastFrameTime);
-  // But to avoid complexity, use simpler approach:
-  // We'll spawn with a small chance each frame scaled by player speed and distance
-  if(Math.random() < (0.01 + player.speed*0.002)){
-    spawnAICar();
-  }
-
-  // Player controls: steering between lanes
-  if(keys.left && player.lane > 0){
-    player.lane -= 1;
-    player.x = laneCenterCache[player.lane];
-    keys.left = false; // single press moves one lane
-  }
-  if(keys.right && player.lane < GAME.lanes-1){
-    player.lane += 1;
-    player.x = laneCenterCache[player.lane];
-    keys.right = false;
-  }
-  // speed controls
-  if(keys.up){
-    player.speed = Math.min(player.maxSpeed, player.speed + player.accel * dt);
-  } else if(keys.down){
-    player.speed = Math.max(0, player.speed - player.braking * dt);
-  } else {
-    // natural friction
-    player.speed = Math.max(0.6, player.speed - 0.02 * dt);
-  }
-
-  // Increase distance by speed * dtFactor
-  distance += player.speed * (dt * 0.3);
-  // increase difficulty slightly with distance
-  const difficulty = 1 + Math.floor(distance / 200);
-  GAME.maxAI = Math.min(10, 6 + difficulty);
-
-  // Update AI cars (move them downwards relative to player's speed)
-  for(let i=aiCars.length-1;i>=0;i--){
-    const ai = aiCars[i];
-    // AI moves down based on its speed minus player's speed (to simulate relative motion)
-    ai.y += (ai.speed - player.speed) * (dt * 1.2);
-    // If AI moves off bottom, remove it and count as a passed car (maybe increment laps)
-    if(ai.y > GAME.height + 120){
-      aiCars.splice(i,1);
-      // small chance to count a passed car as a lap marker
-      if(Math.random() < 0.2) { laps++; updateHUD(); }
-      continue;
-    }
-    // Collision with player: axis-aligned bounding boxes
-    const playerRect = {x: player.x - player.width/2, y: player.y - player.height/2, w: player.width, h: player.height};
-    const aiRect = {x: ai.x - ai.w/2, y: ai.y - ai.h/2, w: ai.w, h: ai.h};
-    if(rectsOverlap(playerRect, aiRect)){
-      // collision event
-      collisions++;
-      player.speed = Math.max(1, player.speed - 3); // slow down on hit
-      // small bounce: push ai away
-      ai.y -= 60;
-      ai.speed = Math.max(1, ai.speed - 2);
-      log(`Collision! total: ${collisions}`);
-      // If too many collisions, end the game (optional)
-      if(collisions >= 8){
-        player.isAlive = false;
-        running = false;
-        log('Game over — too many collisions. Press Reset to try again.');
+      for (let i = 0; i < roadHeight; i += 40) {
+        ctx.beginPath();
+        ctx.moveTo(roadWidth / 2 - 2, i);
+        ctx.lineTo(roadWidth / 2 - 2, i + 20);
+        ctx.stroke();
       }
     }
-  }
 
-  updateHUD();
-  draw();
-  // save timing markers
-  lastFrameTime = now;
-  if(running) requestAnimationFrame(loop);
-}
+    function drawCar(car, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(car.x, car.y, car.width, car.height);
 
-// Drawing functions
-function draw(){
-  // clear
-  ctx.clearRect(0,0,GAME.width,GAME.height);
+      ctx.fillStyle = "#111";
+      ctx.fillRect(car.x + 10, car.y + 10, 30, 40); // windshield
+    }
 
-  // background road
-  drawRoad();
+    function spawnAICar() {
+      const laneX = [60, 160, 260];
+      const lane = laneX[Math.floor(Math.random() * laneX.length)];
+      aiCars.push({
+        x: lane,
+        y: -120,
+        width: 50,
+        height: 100,
+        speed: speed - 1,
+        color: `hsl(${Math.random() * 360}, 80%, 60%)`
+      });
+    }
 
-  // draw AI cars behind player (sort by y)
-  const sortedAI = aiCars.slice().sort((a,b)=>a.y - b.y);
-  for(const ai of sortedAI){
-    drawCar(ai.x, ai.y, ai.w, ai.h, ai.color, false);
-  }
+    function updateAI() {
+      for (let i = aiCars.length - 1; i >= 0; i--) {
+        aiCars[i].y += aiCars[i].speed;
 
-  // draw player (on top)
-  drawCar(player.x, player.y, player.width, player.height, '#00d1b2', true);
+        if (aiCars[i].y > roadHeight) {
+          aiCars.splice(i, 1);
+          score += 10;
+          speed += 0.05; // Increase difficulty
+        }
+      }
+    }
 
-  // HUD overlay (distance)
-  ctx.save();
-  ctx.fillStyle = 'rgba(0,0,0,0.25)';
-  ctx.fillRect(12,12,160,44);
-  ctx.fillStyle = '#fff';
-  ctx.font = '16px sans-serif';
-  ctx.fillText(`Distance: ${Math.floor(distance)} m`, 22, 36);
-  ctx.restore();
-}
+    function checkCollision() {
+      for (let ai of aiCars) {
+        if (
+          playerCar.x < ai.x + ai.width &&
+          playerCar.x + playerCar.width > ai.x &&
+          playerCar.y < ai.y + ai.height &&
+          playerCar.height + playerCar.y > ai.y
+        ) {
+          isGameOver = true;
+          ctx.fillStyle = "rgba(0,0,0,0.7)";
+          ctx.fillRect(0, 0, roadWidth, roadHeight);
 
-function drawRoad(){
-  // road rect
-  const roadX = GAME.roadMargin;
-  const roadW = GAME.width - GAME.roadMargin*2;
-  const roadGrad = ctx.createLinearGradient(0,0,0,GAME.height);
-  roadGrad.addColorStop(0,'#2b2b2b');
-  roadGrad.addColorStop(1,'#222');
-  ctx.fillStyle = roadGrad;
-  roundRect(ctx, roadX, 0, roadW, GAME.height, 8, true, false);
+          ctx.fillStyle = "#fff";
+          ctx.font = "30px Arial";
+          ctx.fillText("GAME OVER!", 90, 250);
 
-  // side grass
-  ctx.fillStyle = '#0c4f1a';
-  ctx.fillRect(0,0,GAME.roadMargin,GAME.height);
-  ctx.fillRect(GAME.width - GAME.roadMargin,0,GAME.roadMargin,GAME.height);
+          ctx.font = "20px Arial";
+          ctx.fillText(`Score: ${score}`, 140, 300);
+        }
+      }
+    }
 
-  // lane markings
-  const laneW = roadW / GAME.lanes;
-  ctx.strokeStyle = 'rgba(255,255,255,0.6)';
-  ctx.lineWidth = 3;
-  for(let i=1;i<GAME.lanes;i++){
-    const lx = roadX + laneW * i;
-    // dashed line
-    ctx.setLineDash([20,16]);
-    ctx.beginPath();
-    ctx.moveTo(lx, -100 + (distance % 36)); // small animation by distance
-    ctx.lineTo(lx, GAME.height + 200);
-    ctx.stroke();
-  }
-  ctx.setLineDash([]);
-}
+    function updatePlayer() {
+      if (keys["ArrowLeft"] && playerCar.x > 20) playerCar.x -= playerCar.speed;
+      if (keys["ArrowRight"] && playerCar.x < roadWidth - playerCar.width - 20) playerCar.x += playerCar.speed;
+      if (keys["ArrowUp"] && playerCar.y > 0) playerCar.y -= playerCar.speed;
+      if (keys["ArrowDown"] && playerCar.y < roadHeight - playerCar.height) playerCar.y += playerCar.speed;
+    }
 
-// helper: draw rounded rect
-function roundRect(ctx,x,y,w,h,r,fill,stroke){
-  if(r===undefined) r=6;
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.arcTo(x+w,y,x+w,y+h,r);
-  ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r);
-  ctx.arcTo(x,y,x+w,y,r);
-  ctx.closePath();
-  if(fill){ ctx.fill(); }
-  if(stroke){ ctx.stroke(); }
-}
+    function updateGame() {
+      if (isPaused || isGameOver) return;
 
-// draw car (simple)
-function drawCar(x,y,w,h,color,isPlayer){
-  ctx.save();
-  ctx.translate(x,y);
-  // shadow
-  ctx.fillStyle = 'rgba(0,0,0,0.4)';
-  ctx.beginPath();
-  ctx.ellipse(0, h*0.48, w*0.7, 8, 0,0,Math.PI*2);
-  ctx.fill();
+      ctx.clearRect(0, 0, roadWidth, roadHeight);
+      drawRoad();
+      drawCar(playerCar, "#00ff99");
 
-  // body
-  ctx.fillStyle = color;
-  roundRect(ctx, -w/2, -h/2, w, h, 8, true, false);
+      aiCars.forEach(ai => drawCar(ai, ai.color));
+      updateAI();
+      updatePlayer();
+      checkCollision();
 
-  // windows
-  ctx.fillStyle = 'rgba(255,255,255,0.22)';
-  roundRect(ctx, -w/2 + 8, -h/2 + 8, w - 16, h/3, 4, true, false);
+      if (Math.random() < 0.02) spawnAICar();
 
-  // head/tail lights
-  ctx.fillStyle = isPlayer ? '#ffeb3b' : '#ffffff';
-  ctx.fillRect(-w/2 + 6, -h/2 + h - 14, 8, 6); // rear
-  ctx.fillStyle = isPlayer ? '#ff4d4d' : '#ff4d4d';
-  ctx.fillRect(w/2 - 14, -h/2 + 6, 8, 6); // front
+      document.getElementById("stats").innerText = `Score: ${score} | Speed: ${speed.toFixed(1)}`;
 
-  ctx.restore();
-}
+      requestAnimationFrame(updateGame);
+    }
 
-// Variables for spawn timing fix
-let lastFrameTime = performance.now();
-let spawnAccumulator = 0;
+    function startGame() {
+      if (isGameOver) return;
+      isPaused = false;
+      updateGame();
+    }
 
-// Initial draw & init
-GAME.width = canvas.clientWidth;
-GAME.height = canvas.clientHeight;
-initGame();
-draw();
+    function pauseGame() {
+      isPaused = true;
+    }
 
-// Auto-start for convenience
-startGame();
+    function restartGame() {
+      playerCar = { x: roadWidth / 2 - 25, y: roadHeight - 120, width: 50, height: 100, speed: 5 };
+      aiCars = [];
+      score = 0;
+      speed = 5;
+      isPaused = false;
+      isGameOver = false;
+      updateGame();
+    }
 
-</script>
+    window.addEventListener("keydown", e => keys[e.key] = true);
+    window.addEventListener("keyup", e => keys[e.key] = false);
+
+    drawRoad();
+    drawCar(playerCar, "#00ff99");
+  </script>
 </body>
 </html>
