@@ -1,212 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Insecurity in Urban Areas</title>
-    <style>
-        /* Global Styling */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        body {
-            background-color: #f6f9fc;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        header {
-            background-color: #1e88e5;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 26px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        nav {
-            background-color: #1565c0;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #ffeb3b;
-        }
-
-        .container {
-            width: 85%;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        h2 {
-            color: #1565c0;
-            margin-bottom: 10px;
-            border-left: 5px solid #1565c0;
-            padding-left: 10px;
-        }
-
-        p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-
-        ul {
-            margin: 10px 0 20px 20px;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        /* Collapsible Section */
-        .collapsible {
-            background-color: #1e88e5;
-            color: white;
-            cursor: pointer;
-            padding: 12px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 18px;
-            margin-top: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .collapsible:hover {
-            background-color: #1565c0;
-        }
-
-        .content {
-            padding: 0 18px;
-            display: none;
-            overflow: hidden;
-            background-color: #f1f1f1;
-            border-left: 4px solid #1565c0;
-            margin-top: 5px;
-            border-radius: 5px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #1e88e5;
-            color: white;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-
-        @media screen and (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 15px;
-            }
-
-            nav a {
-                display: block;
-                margin: 10px 0;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Food Cropping Game</title>
+  <style>
+    :root {
+      --bg: #e8f5e9;
+      --panel: #ffffffcc;
+      --accent: #2e7d32;
+      --muted: #6b6b6b;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#f1fbf4 0%, #e8f5e9 100%);
+      color: #123;
+      display:flex;
+      gap:16px;
+      padding: 18px;
+      align-items:flex-start;
+      min-height:100vh;
+      box-sizing:border-box;
+    }
+    .game {
+      background: var(--panel);
+      border-radius:12px;
+      box-shadow:0 8px 20px rgba(30,60,0,0.08);
+      padding:12px;
+      width:720px;
+    }
+    canvas {
+      background: linear-gradient(#c9f7d6, #a8e6b9);
+      border-radius:8px;
+      display:block;
+      width:100%;
+      height:480px;
+      touch-action: none;
+    }
+    .sidebar {
+      width:320px;
+      background:var(--panel);
+      border-radius:12px;
+      padding:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.05);
+      height:520px;
+      box-sizing:border-box;
+    }
+    h1 { font-size:20px; margin:6px 0 12px; color:var(--accent); }
+    .controls { display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+    button {
+      background:var(--accent);
+      color:white;
+      border:0;
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    button.secondary { background:transparent; border:1px solid #cfe8d6; color:var(--accent); }
+    .info { font-size:13px; color:var(--muted); margin-top:10px; }
+    .row { display:flex; gap:10px; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .stat { font-weight:700; color:#0b4d22; }
+    .log { height:160px; overflow:auto; background:#fff; border-radius:8px; padding:8px; border:1px dashed #e0efe0; font-size:13px; color:#123; }
+    .legend { display:flex; gap:10px; margin-top:8px; flex-wrap:wrap; }
+    .badge { background:#f0fff4; padding:6px 8px; border-radius:6px; border:1px solid #dff2df; font-size:13px; color:#086b2f; }
+    small { color:var(--muted); }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        Food Insecurity in Urban Areas
-    </header>
 
-    <!-- Navigation -->
-    <nav>
-        <a href="#intro">Introduction</a>
-        <a href="#causes">Causes</a>
-        <a href="#effects">Effects</a>
-        <a href="#solutions">Solutions</a>
-    </nav>
+  <div class="game">
+    <h1>Food Cropping — Plant, Water, Harvest</h1>
+    <div class="controls">
+      <button id="seedBtn">Plant Seed (Cost 0)</button>
+      <button id="waterBtn" class="secondary">Water</button>
+      <button id="pesticideBtn" class="secondary">Pesticide</button>
+      <button id="sellBtn">Sell Harvest</button>
+      <div style="flex:1"></div>
+      <div style="align-self:center"><small>Click on soil to plant / harvest.</small></div>
+    </div>
+    <canvas id="field" width="700" height="480"></canvas>
+  </div>
 
-    <!-- Main Content -->
-    <div class="container" id="intro">
-        <h2>Introduction</h2>
-        <p>
-            Food insecurity in urban areas refers to the lack of consistent access to sufficient, safe, and nutritious food 
-            for people living in cities. Despite urban areas having more food resources than rural regions, poverty, 
-            rapid urbanization, and inequality have left millions struggling to afford healthy meals.
-        </p>
+  <div class="sidebar">
+    <div class="row">
+      <div>
+        <div style="font-size:14px;color:var(--muted)">Money</div>
+        <div class="stat" id="money">$0</div>
+      </div>
+      <div>
+        <div style="font-size:14px;color:var(--muted)">Points</div>
+        <div class="stat" id="points">0</div>
+      </div>
     </div>
 
-    <div class="container" id="causes">
-        <h2>Major Causes</h2>
-        <ul>
-            <li><b>Poverty & Low Income:</b> Limited earnings make nutritious food unaffordable.</li>
-            <li><b>High Food Prices:</b> Transportation and storage costs increase retail prices.</li>
-            <li><b>Urban Food Deserts:</b> Some areas lack grocery stores, forcing reliance on fast food.</li>
-            <li><b>Unemployment:</b> Migrants and daily wage workers are the most affected.</li>
-            <li><b>Climate Change:</b> Extreme weather impacts food supply and affordability.</li>
-        </ul>
+    <div class="row">
+      <div style="width:48%">
+        <div style="font-size:12px;color:var(--muted)">Seeds</div>
+        <div id="seeds">∞</div>
+      </div>
+      <div style="width:48%">
+        <div style="font-size:12px;color:var(--muted)">Plants</div>
+        <div id="plantCount">0</div>
+      </div>
     </div>
 
-    <div class="container" id="effects">
-        <h2>Effects of Food Insecurity</h2>
-        <ul>
-            <li><b>Malnutrition:</b> Poor diet leads to undernutrition and obesity.</li>
-            <li><b>Health Issues:</b> Increased risk of diabetes, heart disease, and deficiencies.</li>
-            <li><b>Social Inequality:</b> Expands the gap between rich and poor communities.</li>
-            <li><b>Economic Burden:</b> Reduced productivity and higher healthcare costs.</li>
-        </ul>
+    <div class="legend">
+      <div class="badge">Plant stages: seed → sprout → growing → mature</div>
+      <div class="badge">Water to speed growth</div>
     </div>
 
-    <div class="container" id="solutions">
-        <h2>Possible Solutions</h2>
-        <button class="collapsible">Click to See Solutions</button>
-        <div class="content">
-            <ul>
-                <li>Encourage <b>urban farming</b> and rooftop gardens.</li>
-                <li>Subsidize healthy food for low-income families.</li>
-                <li>Strengthen <b>public food distribution systems</b>.</li>
-                <li>Improve transport to make food markets more accessible.</li>
-                <li>Raise awareness about nutrition and healthy eating.</li>
-            </ul>
-        </div>
+    <h3 style="margin-top:12px;font-size:16px;color:#0b6623">Log</h3>
+    <div class="log" id="log"></div>
+
+    <div class="info">
+      <p><strong>How to play</strong></p>
+      <ol>
+        <li>Click any empty soil cell on the field to plant a seed.</li>
+        <li>Use <em>Water</em> to speed growth (click button then click a plant).</li>
+        <li>Use <em>Pesticide</em> to remove pests from a plant (costs money).</li>
+        <li>Harvest mature plants by clicking them; then sell for money & points.</li>
+      </ol>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <footer>
-        &copy; 2025 Food Awareness Initiative | Designed by Boddati Jagadish
-    </footer>
+<script>
+/*
+  Simple Food Cropping Game
+  - grid-based field
+  - plant seeds by clicking empty cell
+  - each plant has growth stages and timers
+  - water reduces time-to-next-stage
+  - pests can appear and reduce growth/health
+  - harvest when mature -> get money & points
+*/
 
-    <script>
-        // JavaScript for collapsible section
-        const coll = document.getElementsByClassName("collapsible");
-        for (let i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                const content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+const canvas = document.getElementById('field');
+const ctx = canvas.getContext('2d');
+const logEl = document.getElementById('log');
+
+const moneyEl = document.getElementById('money');
+const pointsEl = document.getElementById('points');
+const plantCountEl = document.getElementById('plantCount');
+
+const seedBtn = document.getElementById('seedBtn');
+const waterBtn = document.getElementById('waterBtn');
+const pesticideBtn = document.getElementById('pesticideBtn');
+const sellBtn = document.getElementById('sellBtn');
+
+let money = 0;
+let points = 0;
+let selectedTool = 'plant'; // 'plant', 'water', 'pesticide'
+let gridCols = 7, gridRows = 5;
+let cellW = canvas.width / gridCols;
+let cellH = canvas.height / gridRows;
+
+let plants = []; // store plant objects keyed by r,c via index r*cols+c
+
+function initPlants() {
+  plants = new Array(gridRows * gridCols).fill(null);
+}
+initPlants();
+
+function log(msg) {
+  const t = new Date().toLocaleTimeString();
+  logEl.innerHTML = `<div>[${t}] ${msg}</div>` + logEl.innerHTML;
+}
+
+// Plant model
+function createPlant() {
+  return {
+    stage: 0, // 0 seed, 1 sprout, 2 growing, 3 mature
+    age: 0, // seconds since planted
+    growthForNext: 8 + Math.random()*10, // seconds to next stage
+    watered: 0, // times watered (reduces next time)
+    pest: false,
+    health: 100
+  };
+}
+
+// Tools
+seedBtn.addEventListener('click', ()=> { selectedTool = 'plant'; seedBtn.style.opacity=1; waterBtn.style.opacity=0.9; pesticideBtn.style.opacity=0.9; });
+waterBtn.addEventListener('click', ()=> { selectedTool = 'water'; seedBtn.style.opacity=0.9; waterBtn.style.opacity=1; pesticideBtn.style.opacity=0.9; });
+pesticideBtn.addEventListener('click', ()=> { selectedTool = 'pesticide'; seedBtn.style.opacity=0.9; waterBtn.style.opacity=0.9; pesticideBtn.style.opacity=1; });
+sellBtn.addEventListener('click', ()=> {
+  // Sell all harvested produce (money already given on harvest; this is bonus)
+  const bonus = Math.floor(points * 0.1);
+  money += bonus;
+  log(`Sold bonus produce for $${bonus}`);
+  updateHUD();
+});
+
+canvas.addEventListener('click', (e)=>{
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * (canvas.width/rect.width);
+  const y = (e.clientY - rect.top) * (canvas.height/rect.height);
+  const c = Math.floor(x / cellW);
+  const r = Math.floor(y
